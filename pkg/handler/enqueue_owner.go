@@ -59,8 +59,8 @@ type EnqueueRequestForOwner struct {
 
 // Create implements EventHandler
 func (e *EnqueueRequestForOwner) Create(evt event.CreateEvent, q workqueue.RateLimitingInterface) {
-	fmt.Println(evt.Object.GetObjectKind().GroupVersionKind())
-	fmt.Println(evt.Meta.GetNamespace(), evt.Meta.GetName())
+	log.Info(evt.Object.GetObjectKind().GroupVersionKind())
+	log.Info(evt.Meta.GetNamespace(), evt.Meta.GetName())
 	for _, req := range e.getOwnerReconcileRequest(evt.Meta) {
 		q.Add(req)
 	}
@@ -68,6 +68,10 @@ func (e *EnqueueRequestForOwner) Create(evt event.CreateEvent, q workqueue.RateL
 
 // Update implements EventHandler
 func (e *EnqueueRequestForOwner) Update(evt event.UpdateEvent, q workqueue.RateLimitingInterface) {
+	log.Info(evt.ObjectOld.GetObjectKind().GroupVersionKind())
+	log.Info(evt.MetaOld.GetNamespace(), evt.MetaOld.GetName())
+	log.Info(evt.ObjectNew.GetObjectKind().GroupVersionKind())
+	log.Info(evt.MetaNew.GetNamespace(), evt.MetaNew.GetName())
 	for _, req := range e.getOwnerReconcileRequest(evt.MetaOld) {
 		q.Add(req)
 	}
@@ -78,8 +82,8 @@ func (e *EnqueueRequestForOwner) Update(evt event.UpdateEvent, q workqueue.RateL
 
 // Delete implements EventHandler
 func (e *EnqueueRequestForOwner) Delete(evt event.DeleteEvent, q workqueue.RateLimitingInterface) {
-	fmt.Println(evt.Object.GetObjectKind().GroupVersionKind())
-	fmt.Println(evt.Meta.GetNamespace(), evt.Meta.GetName())
+	log.Info(evt.Object.GetObjectKind().GroupVersionKind())
+	log.Info(evt.Meta.GetNamespace(), evt.Meta.GetName())
 	for _, req := range e.getOwnerReconcileRequest(evt.Meta) {
 		q.Add(req)
 	}
@@ -87,8 +91,8 @@ func (e *EnqueueRequestForOwner) Delete(evt event.DeleteEvent, q workqueue.RateL
 
 // Generic implements EventHandler
 func (e *EnqueueRequestForOwner) Generic(evt event.GenericEvent, q workqueue.RateLimitingInterface) {
-	fmt.Println(evt.Object.GetObjectKind().GroupVersionKind())
-	fmt.Println(evt.Meta.GetNamespace(), evt.Meta.GetName())
+	log.Info(evt.Object.GetObjectKind().GroupVersionKind())
+	log.Info(evt.Meta.GetNamespace(), evt.Meta.GetName())
 	for _, req := range e.getOwnerReconcileRequest(evt.Meta) {
 		q.Add(req)
 	}
