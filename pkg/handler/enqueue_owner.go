@@ -83,7 +83,7 @@ func (e *EnqueueRequestForOwner) Update(evt event.UpdateEvent, q workqueue.RateL
 // Delete implements EventHandler
 func (e *EnqueueRequestForOwner) Delete(evt event.DeleteEvent, q workqueue.RateLimitingInterface) {
 	fmt.Println("Delete: object/version:", evt.Object.GetObjectKind().GroupVersionKind())
-	fmt.Println("Delete: namespace:"., evt.Meta.GetNamespace(), "name:", evt.Meta.GetName())
+	fmt.Println("Delete: namespace:", evt.Meta.GetNamespace(), "name:", evt.Meta.GetName())
 	for _, req := range e.getOwnerReconcileRequest(evt.Meta) {
 		q.Add(req)
 	}
